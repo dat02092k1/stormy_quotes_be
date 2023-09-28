@@ -1,5 +1,6 @@
 import express from 'express';
 import {db} from "./config/init.postgresql";
+import {router} from "./routes/routes";
 // import {db} from '../config/db.config';
 // import {router} from "../routes/route";
 
@@ -10,6 +11,7 @@ app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
 // routes
+app.use('/', router);
 
 // db
 //synchronizing the database and forcing it to false so we dont lose data

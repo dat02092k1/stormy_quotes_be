@@ -31,5 +31,5 @@ db.sequelize = sequelize;
 db.users = userModel(sequelize, DataTypes);
 db.quotes = quoteModel(sequelize, DataTypes);
 
-db.users.hasMany(db.quotes, { foreignKey: 'userId' });
-db.quotes.belongsTo(db.users, { foreignKey: 'userId' });
+// db.users.hasMany(db.quotes, { foreignKey: 'userId' });
+// db.quotes.belongsTo(db.users, { foreignKey: 'userId' });
