@@ -1,6 +1,8 @@
 import {Sequelize, DataTypes} from 'sequelize';
 import userModel from '../models/user.model';
 import quoteModel from '../models/quote.model';
+import categoryModel from '../models/category.model';
+
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -14,7 +16,7 @@ const db_pw = process.env.DB_PW;
 const sequelize = new Sequelize(`postgres://postgres:${db_pw}@localhost:${db_port}/${db_name}`, { dialect: "postgres" });
 
 // checking if the connection is done
-sequelize.authenticate().then(() => {
+    sequelize.authenticate().then(() => {
     console.log(`Database connected to discover`);
 }).catch((err) => {
     console.log(err);
@@ -28,6 +30,7 @@ db.sequelize = sequelize;
 // connecting to model
 db.users = userModel(sequelize, DataTypes);
 db.quotes = quoteModel(sequelize, DataTypes);
+db.categories = categoryModel(sequelize, DataTypes);
 
-// db.users.hasMany(db.quotes, { foreignKey: 'userId' });
-// db.quotes.belongsTo(db.users, { foreignKey: 'userId' });
+db.categories.hasMany(db.quotes, { foreignKey: 'category_id' });
+db.quotes.belongsTo(db.categories, { foreignKey: 'category_id' });

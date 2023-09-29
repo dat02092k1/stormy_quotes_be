@@ -15,7 +15,6 @@ redisClient.on('error', (err) => {
 });
 
 export function isRedisConnected() {
-    console.log(redisClient.status);
     return redisClient.status === 'ready';
 }
 
