@@ -1,5 +1,6 @@
 import {Request, Response} from "express";
 import {CategoryService} from "../services/category.service";
+import {UtilsFunc} from "../utils/utils";
 
 class CategoryController {
     create = async (req: Request, res: Response) => {
@@ -11,9 +12,8 @@ class CategoryController {
     }
 
     delete = async (req: Request, res: Response) => {
-        const id = req.params.id;
-
-        const deletedCategory = await CategoryService.deleteCategory(parseInt(id));
+        const options = UtilsFunc.getQueryParams(req.params);
+        const deletedCategory = await CategoryService.deleteCategory(options);
 
         res.status(200).send(deletedCategory);
     }

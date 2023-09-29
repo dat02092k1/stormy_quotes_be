@@ -1,13 +1,13 @@
 import {db} from "../config/init.postgresql";
 import {UtilsFunc} from "../utils/utils";
-import {where} from "sequelize";
+import {ModelCtor, where} from "sequelize";
 import {BaseRepository} from "../repository/base.repository";
 
 const categoryRepo = new BaseRepository(db.categories);
 export class CategoryService {
     static async addCategory(category: any) {
         try {
-            const newCategory = await db.categories.create(category);
+            const newCategory = await categoryRepo.create(category);
 
             if (!newCategory) throw new Error('Category creation failed');
 
@@ -17,10 +17,9 @@ export class CategoryService {
         }
     }
 
-    static async deleteCategory(id: number) {
+    static async deleteCategory(options: any) {
         try {
-            const option
-            const category = await categoryRepo.delete(id);
+            const category = await categoryRepo.delete(options);
 
             return 'deleted';
         } catch (e) {
@@ -30,7 +29,7 @@ export class CategoryService {
 
     static async getAllCategories() {
         try {
-            const categories = await categoryRepo.findAll();
+            const categories = await categoryRepo.findWithCondition();
 
             if (!categories) throw new Error('Categories not found');
 

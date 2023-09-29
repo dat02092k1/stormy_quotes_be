@@ -1,6 +1,7 @@
 import {Request, Response} from "express";
 import {QuoteService} from "../services/quote.service";
 import {parseInt} from "lodash";
+import {UtilsFunc} from "../utils/utils";
 
 class QuoteController {
     create = async (req: Request, res: Response) => {
@@ -17,11 +18,14 @@ class QuoteController {
 
     edit = async (req: Request, res: Response) => {
         const data = {
-            quote: req.body.quote,
-            id: req.params.id
-        }
+            quote: req.body.quote.quote,
+            author: req.body.quote.author,
+            category_id: req.body.quote.category_id
+        };
 
-        const quote = await QuoteService.editQuote(data);
+        const options = UtilsFunc.getQueryParams(req.params);
+
+        const quote = await QuoteService.editQuote(data, options);
 
         res.status(200).send(quote);
     }

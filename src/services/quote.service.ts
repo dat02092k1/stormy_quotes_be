@@ -7,7 +7,7 @@ export class QuoteService {
     static async addQuote(data: any) {
         try {
 
-            const newQuote = await db.quotes.create(data);
+            const newQuote = await quoteRepository.create(data);
 
             if (!newQuote) throw new Error('Quote creation failed');
             console.log('newQuote::', newQuote);
@@ -17,16 +17,15 @@ export class QuoteService {
         }
     }
 
-    static async editQuote(data: any) {
+    static async editQuote(data: any, options: any) {
         try {
-            const {id, quote} = data;
-
-            let targetQuote = await db.quotes.findByPk(id);
+            console.log('options::', options.condition);
+            let targetQuote = await quoteRepository.findOne(options.condition);
 
             if (!targetQuote) throw new Error('Quote not found');
 
-            targetQuote = UtilsFunc.updateObj(targetQuote, quote);
-            targetQuote.save();
+            await quoteRepository.update(data, options.condition);
+
             return {
                 metadata: targetQuote,
                 message: 'updated'

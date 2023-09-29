@@ -8,22 +8,21 @@ export class BaseRepository<T extends Model> {
         this.model = model;
     }
 
-    async findOne(options: WhereOptions): Promise<T | null> {
+    async findOne(options: any): Promise<T | null> {
         try {
-            const result = await this.model.findOne({where: options});
+            const result = await this.model.findOne({ where: options });
+
             return result || null;
-        }
-        catch (e) {
+        } catch (e) {
             throw e;
         }
     }
 
-    async findAll(options?: WhereOptions): Promise<T[]> {
+     async findWithCondition(options?: any): Promise<T[]> {
         try {
-            const result = await this.model.findAll({where: options});
+            const result = await this.model.findAll({where: (options.condition)});
             return result;
-        }
-        catch (e) {
+        } catch (e) {
             throw e;
         }
     }
@@ -32,30 +31,29 @@ export class BaseRepository<T extends Model> {
         try {
             const result = await this.model.create(data);
             return result;
+        } catch (e) {
+            throw e;
+        }
+    }
+
+    async update(data: any, options: any): Promise<T | null> {
+        try {
+            let doc = await this.model.findOne({where: options});
+            // console.log('doc::', doc)
+            doc = UtilsFunc.updateObj(doc, data);
+            await doc?.save();
+            return doc || null;
         }
         catch (e) {
             throw e;
         }
     }
-    
-    async update(data: any, options: WhereOptions): Promise<T> {
-        try {
-            const doc = await this.model.findOne({where: options});
-            if (!doc) throw new Error('Document not found');
 
-            UtilsFunc.updateObj(doc, data);
-            return doc;
-        }
-        catch (e) {
-            throw e;
-        }
-    }
-
-    async delete(options: DestroyOptions): Promise<void> {
+    async delete(options: any): Promise<void> {
         try {
-            const doc = await this.model.destroy(options);
-        }
-        catch (e) {
+            const doc = await this.model.destroy({where: options?.condition});
+            console.log('deleted', doc);
+        } catch (e) {
             console.log(e);
         }
     }

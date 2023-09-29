@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import _, {parseInt} from 'lodash';
 
 export class UtilsFunc {
     static getInfoData ({ fields = [] as string[], object = {} }) {
@@ -6,6 +6,7 @@ export class UtilsFunc {
     }
 
     static updateObj (targetObj: any, newObj: any) {
+
         return _.extend(targetObj, newObj);
     }
 
@@ -13,23 +14,8 @@ export class UtilsFunc {
         if (!options.condition) {
             options.condition = {};
         }
-        if (options.userId) {
-            options.condition['user'] = options.userId;
-        }
-        if (typeof options.condition === 'object') {
-            if (options.condition.createdFrom && options.condition.createdTo) {
-                var startDate = new Date(options.condition.createdFrom);
-                var endDate = new Date(options.condition.createdTo);
-                endDate.setDate(endDate.getDate() + 1);
-                endDate = new Date(endDate);
-                var createdCondition = {
-                    $gte: startDate,
-                    $lt: endDate
-                };
-                options.condition.created = createdCondition;
-            }
-            delete options.condition.createdFrom;
-            delete options.condition.createdTo;
+        if (options.id || options.quoteId || options.category_id) {
+            options.condition['id'] = parseInt(options.id) || parseInt(options.quoteId) || parseInt(options.category_id);
         }
 
         return {
