@@ -50,4 +50,20 @@ export class QuoteService {
         }
     }
 
+    static async findQuotesByCategory(categoryId: string) {
+        try {
+            const quotes = db.quotes.findAndCountAll({
+                where: {
+                    category_id: parseInt(categoryId)
+                }
+            });
+
+            if (!quotes) throw new Error('Quotes not found');
+
+            return quotes;
+        }
+        catch (e) {
+            console.log(e);
+        }
+    }
 }

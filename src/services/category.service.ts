@@ -1,5 +1,6 @@
 import {db} from "../config/init.postgresql";
 import {UtilsFunc} from "../utils/utils";
+import {where} from "sequelize";
 
 export class CategoryService {
     static async addCategory(category: any) {
