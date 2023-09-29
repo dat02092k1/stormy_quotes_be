@@ -2,8 +2,6 @@ import {Sequelize, DataTypes} from 'sequelize';
 import userModel from '../models/user.model';
 import quoteModel from '../models/quote.model';
 import dotenv from 'dotenv';
-import UserModel from "../models/user.model";
-import QuoteModel from "../models/quote.model";
 dotenv.config();
 
 // Database connection with dialect of postgres specifying the database we are using

@@ -1,6 +1,7 @@
 import express from 'express';
 import {db} from "./config/init.postgresql";
 import {router} from "./routes/routes";
+import {isRedisConnected} from "./3rd_parties/redis";
 // import {db} from '../config/db.config';
 // import {router} from "../routes/route";
 
@@ -18,4 +19,12 @@ app.use('/', router);
 db.sequelize.sync({ force: true }).then(() => {
     console.log("db has been re sync")
 })
+
+// redis
+if (isRedisConnected()) {
+    console.log('Redis client is connected to the Redis server');
+} else {
+    console.log('Redis client is not connected to the Redis server');
+}
+
 // app.use('/', router);
