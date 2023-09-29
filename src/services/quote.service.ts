@@ -1,4 +1,3 @@
-import Quote from "../models/quote.model";
 import {db} from "../config/init.postgresql";
 import {UtilsFunc} from "../utils/utils";
 
