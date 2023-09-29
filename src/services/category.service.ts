@@ -1,7 +1,9 @@
 import {db} from "../config/init.postgresql";
 import {UtilsFunc} from "../utils/utils";
 import {where} from "sequelize";
+import {BaseRepository} from "../repository/base.repository";
 
+const categoryRepo = new BaseRepository(db.categories);
 export class CategoryService {
     static async addCategory(category: any) {
         try {
@@ -17,13 +19,8 @@ export class CategoryService {
 
     static async deleteCategory(id: number) {
         try {
-            const category = await db.categories.findByPk(id);
-
-            if (!category) throw new Error('Quote not found');
-
-            category.destroy({
-                where: {id: id}
-            });
+            const option
+            const category = await categoryRepo.delete(id);
 
             return 'deleted';
         } catch (e) {
@@ -33,7 +30,7 @@ export class CategoryService {
 
     static async getAllCategories() {
         try {
-            const categories = await db.categories.findAll();
+            const categories = await categoryRepo.findAll();
 
             if (!categories) throw new Error('Categories not found');
 

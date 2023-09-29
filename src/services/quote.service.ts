@@ -1,6 +1,8 @@
 import {db} from "../config/init.postgresql";
 import {UtilsFunc} from "../utils/utils";
+import {BaseRepository} from "../repository/base.repository";
 
+const quoteRepository = new BaseRepository(db.quotes);
 export class QuoteService {
     static async addQuote(data: any) {
         try {
