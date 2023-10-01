@@ -1,15 +1,15 @@
 import {Request, Response} from "express";
 import {CategoryService} from "../services/category.service";
 import {UtilsFunc} from "../utils/utils";
+import { asyncHandler } from "../middlewares/asyncHandler";
+import { OK } from "../response/success.response";
 
 class CategoryController {
-    create = async (req: Request, res: Response) => {
+    create = asyncHandler(async (req: Request, res: Response) => {
         const category =  req.body.category;
 
-        const newCategory = await CategoryService.addCategory(category);
-
-        res.status(201).send(newCategory);
-    }
+        OK(res, 'create success', await CategoryService.addCategory(category));
+    })
 
     delete = async (req: Request, res: Response) => {
         const options = UtilsFunc.getQueryParams(req.params);

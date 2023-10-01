@@ -2,6 +2,7 @@ import express from 'express';
 import {db} from "./config/init.postgresql";
 import {router} from "./routes/routes";
 import {isRedisConnected} from "./3rd_parties/redis";
+import { is404Handler, logErrorMiddleware, returnError } from './middlewares/errorHandler';
 // import {db} from '../config/db.config';
 // import {router} from "../routes/route";
 
@@ -27,4 +28,8 @@ if (isRedisConnected()) {
     console.log('Redis client is not connected to the Redis server');
 }
 
-// app.use('/', router);
+// handle errors
+app.use(is404Handler);
+app.use(logErrorMiddleware);
+app.use(returnError);
+

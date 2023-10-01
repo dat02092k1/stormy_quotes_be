@@ -2,19 +2,23 @@ import {db} from "../config/init.postgresql";
 import {UtilsFunc} from "../utils/utils";
 import {ModelCtor, where} from "sequelize";
 import {BaseRepository} from "../repository/base.repository";
+import { Api404Error } from "../response/error.response";
 
 const categoryRepo = new BaseRepository(db.categories);
 export class CategoryService {
     static async addCategory(category: any) {
-        try {
-            const newCategory = await categoryRepo.create(category);
+        if (!category.name) {
+            // Nếu trường name không được cung cấp, trả về lỗi 401
+            throw new Api404Error('Category name is required');
+        }
 
-            if (!newCategory) throw new Error('Category creation failed');
+            const newCategory = await db.categories.create(category);
+            console.log('newCategory::', newCategory);
+            
+            // if (!newCategory) throw new Api404Error('Category creation failed');
 
             return newCategory;
-        } catch (e) {
-            console.log(e);
-        }
+         
     }
 
     static async deleteCategory(options: any) {
