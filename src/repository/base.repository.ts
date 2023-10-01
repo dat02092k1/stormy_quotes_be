@@ -20,7 +20,7 @@ export class BaseRepository<T extends Model> {
 
      async findWithCondition(options?: any): Promise<T[]> {
         try {
-            const result = await this.model.findAll({where: (options.condition)});
+            const result = await this.model.findAll({where: (options?.condition?? '')});
             return result;
         } catch (e) {
             throw e;
